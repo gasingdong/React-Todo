@@ -6,15 +6,16 @@ import Todo from './Todo';
 
 interface TodoListProps {
   todoList: TodoData[];
+  toggleTodo: (id: number) => void;
 }
 
 const TodoList = (props: TodoListProps): React.ReactElement => {
-  const { todoList } = props;
+  const { todoList, toggleTodo } = props;
   return (
     <>
       {todoList.map(
         (todo): React.ReactElement => (
-          <Todo todo={todo} />
+          <Todo todo={todo} toggleTodo={toggleTodo} />
         )
       )}
     </>

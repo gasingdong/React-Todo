@@ -4,12 +4,19 @@ import './Todo.css';
 
 interface TodoProps {
   todo: TodoData;
+  toggleTodo: (id: number) => void;
 }
 
 const Todo = (props: TodoProps): React.ReactElement => {
-  const { todo } = props;
+  const { todo, toggleTodo } = props;
   return (
-    <div className="todo">
+    <div
+      role="button"
+      className={`todo${todo.completed ? ' completed' : ''}`}
+      onClick={(): void => toggleTodo(todo.id)}
+      onKeyPress={(): void => toggleTodo(todo.id)}
+      tabIndex={0}
+    >
       <p>{todo.task}</p>
     </div>
   );

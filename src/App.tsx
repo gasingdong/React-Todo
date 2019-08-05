@@ -19,16 +19,36 @@ class App extends React.Component<{}, AppState> {
   }
 
   private addTodo = (name: string): void => {
-    this.setState((prevState: { todoList: [] }): {} => ({
-      todoList: [
-        ...prevState.todoList,
-        {
-          task: name,
-          id: Date.now(),
-          completed: false,
-        },
-      ],
-    }));
+    this.setState(
+      (prevState: AppState): AppState => ({
+        todoList: [
+          ...prevState.todoList,
+          {
+            task: name,
+            id: Date.now(),
+            completed: false,
+          },
+        ],
+      })
+    );
+  };
+
+  private toggleTodo = (id: number): void => {
+    this.setState(
+      (prevState: AppState): AppState => ({
+        todoList: prevState.todoList.map(
+          (todo): TodoData => {
+            if (todo.id === id) {
+              return {
+                ...todo,
+                completed: !todo.completed,
+              };
+            }
+            return todo;
+          }
+        ),
+      })
+    );
   };
 
   public render(): React.ReactNode {
@@ -36,7 +56,7 @@ class App extends React.Component<{}, AppState> {
     return (
       <div>
         <h2>Todo List: MVP</h2>
-        <TodoList todoList={todoList} />
+        <TodoList todoList={todoList} toggleTodo={this.toggleTodo} />
         <TodoForm addTodo={this.addTodo} />
       </div>
     );
