@@ -15,7 +15,7 @@ const TodoList = (props: TodoListProps): React.ReactElement => {
     <>
       {todoList.map(
         (todo): React.ReactElement => (
-          <Todo todo={todo} toggleTodo={toggleTodo} />
+          <Todo key={todo.id} todo={todo} toggleTodo={toggleTodo} />
         )
       )}
     </>
