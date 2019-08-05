@@ -3,10 +3,13 @@ import React from 'react';
 interface TodoFormProps {
   addTodo: (name: string) => void;
   clearCompleted: () => void;
+  searchTerm: string;
+  updateSearch: (search: string) => void;
 }
 
 interface TodoFormState {
   todo: string;
+  search: string;
 }
 
 class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
@@ -14,24 +17,32 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
     super(props);
     this.state = {
       todo: '',
+      search: props.searchTerm,
     };
   }
 
   private handleChanges = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    this.setState({
-      todo: event.target.value,
-    });
+    const { value } = event.target;
+    this.setState(
+      (prevState: TodoFormState): TodoFormState => ({
+        ...prevState,
+        todo: value,
+      })
+    );
   };
 
   private handleSubmit = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
     const { todo } = this.state;
     const { addTodo } = this.props;
-    this.setState({
-      todo: '',
-    });
+    this.setState(
+      (prevState: TodoFormState): TodoFormState => ({
+        ...prevState,
+        todo: '',
+      })
+    );
     addTodo(todo);
   };
 
@@ -41,8 +52,20 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
     clearCompleted();
   };
 
+  private handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const { value } = event.target;
+    this.setState(
+      (prevState: TodoFormState): TodoFormState => ({
+        ...prevState,
+        search: value,
+      })
+    );
+    const { updateSearch } = this.props;
+    updateSearch(event.target.value);
+  };
+
   public render(): React.ReactElement {
-    const { todo } = this.state;
+    const { todo, search } = this.state;
     return (
       <div>
         <form>
@@ -58,6 +81,12 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
           <button type="submit" onClick={this.handleClear}>
             Clear Completed
           </button>
+          <input
+            type="text"
+            value={search}
+            name="search"
+            onChange={this.handleSearch}
+          />
         </form>
       </div>
     );

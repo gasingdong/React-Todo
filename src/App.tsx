@@ -5,6 +5,7 @@ import TodoData from './components/TodoData';
 
 interface AppState {
   todoList: TodoData[];
+  searchTerm: string;
 }
 
 class App extends React.Component<{}, AppState> {
@@ -15,6 +16,7 @@ class App extends React.Component<{}, AppState> {
     super(props);
     this.state = {
       todoList: [],
+      searchTerm: '',
     };
   }
 
@@ -24,7 +26,7 @@ class App extends React.Component<{}, AppState> {
 
   private getLocalStorage = (): AppState => {
     const item = window.localStorage.getItem('todoList');
-    return item ? JSON.parse(item) : { todoList: [] };
+    return item ? JSON.parse(item) : { todoList: [], searchTerm: '' };
   };
 
   private setLocalStorage = (state: AppState): void => {
@@ -35,6 +37,7 @@ class App extends React.Component<{}, AppState> {
     this.setState(
       (prevState: AppState): AppState => {
         const newState = {
+          ...prevState,
           todoList: [
             ...prevState.todoList,
             {
@@ -54,6 +57,7 @@ class App extends React.Component<{}, AppState> {
     this.setState(
       (prevState: AppState): AppState => {
         const newState = {
+          ...prevState,
           todoList: prevState.todoList.map(
             (todo): TodoData => {
               if (todo.id === id) {
@@ -76,6 +80,7 @@ class App extends React.Component<{}, AppState> {
     this.setState(
       (prevState: AppState): AppState => {
         const newState = {
+          ...prevState,
           todoList: prevState.todoList.filter((todo): boolean => {
             return !todo.completed;
           }),
@@ -86,13 +91,35 @@ class App extends React.Component<{}, AppState> {
     );
   };
 
+  private updateSearch = (search: string): void => {
+    this.setState(
+      (prevState: AppState): AppState => {
+        const newState = {
+          ...prevState,
+          searchTerm: search,
+        };
+        this.setLocalStorage(newState);
+        return newState;
+      }
+    );
+  };
+
   public render(): React.ReactNode {
-    const { todoList } = this.state;
+    const { todoList, searchTerm } = this.state;
     return (
       <div>
         <h2>Todo List: MVP</h2>
-        <TodoList todoList={todoList} toggleTodo={this.toggleTodo} />
-        <TodoForm addTodo={this.addTodo} clearCompleted={this.clearCompleted} />
+        <TodoList
+          todoList={todoList}
+          toggleTodo={this.toggleTodo}
+          searchTerm={searchTerm}
+        />
+        <TodoForm
+          addTodo={this.addTodo}
+          clearCompleted={this.clearCompleted}
+          searchTerm={searchTerm}
+          updateSearch={this.updateSearch}
+        />
       </div>
     );
   }

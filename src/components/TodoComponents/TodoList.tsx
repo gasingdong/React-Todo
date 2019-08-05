@@ -7,17 +7,20 @@ import Todo from './Todo';
 interface TodoListProps {
   todoList: TodoData[];
   toggleTodo: (id: number) => void;
+  searchTerm: string;
 }
 
 const TodoList = (props: TodoListProps): React.ReactElement => {
-  const { todoList, toggleTodo } = props;
+  const { todoList, toggleTodo, searchTerm } = props;
   return (
     <>
-      {todoList.map(
-        (todo): React.ReactElement => (
-          <Todo key={todo.id} todo={todo} toggleTodo={toggleTodo} />
-        )
-      )}
+      {todoList
+        .filter((todo): boolean => todo.task.includes(searchTerm))
+        .map(
+          (todo): React.ReactElement => (
+            <Todo key={todo.id} todo={todo} toggleTodo={toggleTodo} />
+          )
+        )}
     </>
   );
 };
