@@ -14,14 +14,11 @@ class App extends React.Component<{}, AppState> {
   // this component is going to take care of state, and any change handlers you need to work with your state
   private constructor(props: {}) {
     super(props);
-    this.state = {
-      todoList: [],
-      searchTerm: '',
-    };
+    this.state = this.getLocalStorage();
   }
 
-  public componentDidMount(): void {
-    this.setState(this.getLocalStorage());
+  public componentDidUpdate(): void {
+    this.setLocalStorage(this.state);
   }
 
   private getLocalStorage = (): AppState => {
@@ -35,72 +32,56 @@ class App extends React.Component<{}, AppState> {
 
   private addTodo = (name: string): void => {
     this.setState(
-      (prevState: AppState): AppState => {
-        const newState = {
-          ...prevState,
-          todoList: [
-            ...prevState.todoList,
-            {
-              task: name,
-              id: Date.now(),
-              completed: false,
-            },
-          ],
-        };
-        this.setLocalStorage(newState);
-        return newState;
-      }
+      (prevState: AppState): AppState => ({
+        ...prevState,
+        todoList: [
+          ...prevState.todoList,
+          {
+            task: name,
+            id: Date.now(),
+            completed: false,
+          },
+        ],
+      })
     );
   };
 
   private toggleTodo = (id: number): void => {
     this.setState(
-      (prevState: AppState): AppState => {
-        const newState = {
-          ...prevState,
-          todoList: prevState.todoList.map(
-            (todo): TodoData => {
-              if (todo.id === id) {
-                return {
-                  ...todo,
-                  completed: !todo.completed,
-                };
-              }
-              return todo;
+      (prevState: AppState): AppState => ({
+        ...prevState,
+        todoList: prevState.todoList.map(
+          (todo): TodoData => {
+            if (todo.id === id) {
+              return {
+                ...todo,
+                completed: !todo.completed,
+              };
             }
-          ),
-        };
-        this.setLocalStorage(newState);
-        return newState;
-      }
+            return todo;
+          }
+        ),
+      })
     );
   };
 
   private clearCompleted = (): void => {
     this.setState(
-      (prevState: AppState): AppState => {
-        const newState = {
-          ...prevState,
-          todoList: prevState.todoList.filter((todo): boolean => {
-            return !todo.completed;
-          }),
-        };
-        this.setLocalStorage(newState);
-        return newState;
-      }
+      (prevState: AppState): AppState => ({
+        ...prevState,
+        todoList: prevState.todoList.filter((todo): boolean => {
+          return !todo.completed;
+        }),
+      })
     );
   };
 
   private updateSearch = (search: string): void => {
     this.setState(
-      (prevState: AppState): AppState => {
-        const newState = {
-          ...prevState,
-          searchTerm: search,
-        };
-        this.setLocalStorage(newState);
-        return newState;
-      }
+      (prevState: AppState): AppState => ({
+        ...prevState,
+        searchTerm: search,
+      })
     );
   };
 
