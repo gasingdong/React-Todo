@@ -12,11 +12,17 @@ class App extends React.Component {
     };
   }
 
+  private addTodo = (name: string): void => {
+    this.setState((prevState: { todoList: [] }): {} => ({
+      todoList: [...prevState.todoList, name],
+    }));
+  };
+
   public render(): React.ReactNode {
     return (
       <div>
         <h2>Todo List: MVP</h2>
-        <TodoForm />
+        <TodoForm addTodo={this.addTodo} />
       </div>
     );
   }
