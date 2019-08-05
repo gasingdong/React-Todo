@@ -37,11 +37,7 @@ class App extends React.Component<{}, AppState> {
     return (
       <div>
         <h2>Todo List: MVP</h2>
-        {todoList.map(
-          (todo): React.ReactElement => (
-            <Todo todo={todo} />
-          )
-        )}
+        <TodoList todoList={todoList} />
         <TodoForm addTodo={this.addTodo} />
       </div>
     );
