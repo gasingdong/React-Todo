@@ -22,12 +22,11 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
     this.setState({
       todo: event.target.value,
     });
-    const { todo } = this.state;
-    console.log(todo);
   };
 
   public render(): React.ReactElement {
     const { todo } = this.state;
+    const { addTodo } = this.props;
     return (
       <div>
         <form>
@@ -37,7 +36,9 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
             name="todo"
             onChange={this.handleChanges}
           />
-          <button type="submit">Add Todo</button>
+          <button type="submit" onClick={(): void => addTodo(todo)}>
+            Add Todo
+          </button>
           <button type="submit">Clear Completed</button>
         </form>
       </div>
