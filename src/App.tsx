@@ -1,7 +1,13 @@
 import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm';
+import TodoList from './components/TodoComponents/TodoList';
+import Todo from './components/TodoComponents/Todo';
 
-class App extends React.Component {
+interface AppState {
+  todoList: string[];
+}
+
+class App extends React.Component<{}, AppState> {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
@@ -19,9 +25,15 @@ class App extends React.Component {
   };
 
   public render(): React.ReactNode {
+    const { todoList } = this.state;
     return (
       <div>
         <h2>Todo List: MVP</h2>
+        {todoList.map(
+          (task): React.ReactElement => (
+            <Todo task={task} />
+          )
+        )}
         <TodoForm addTodo={this.addTodo} />
       </div>
     );

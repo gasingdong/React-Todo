@@ -1,9 +1,12 @@
 import React from 'react';
 
-class Todo extends React.Component {
-  public render(): React.ReactNode {
-    return <></>;
-  }
+interface TodoProps {
+  task: string;
 }
+
+const Todo = (props: TodoProps): React.ReactElement => {
+  const { task } = props;
+  return <p>{task}</p>;
+};
 
 export default Todo;

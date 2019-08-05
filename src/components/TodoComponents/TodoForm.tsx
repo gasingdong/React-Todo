@@ -24,9 +24,15 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
     });
   };
 
-  public render(): React.ReactElement {
+  private handleSubmit = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    event.preventDefault();
     const { todo } = this.state;
     const { addTodo } = this.props;
+    addTodo(todo);
+  };
+
+  public render(): React.ReactElement {
+    const { todo } = this.state;
     return (
       <div>
         <form>
@@ -36,7 +42,7 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
             name="todo"
             onChange={this.handleChanges}
           />
-          <button type="submit" onClick={(): void => addTodo(todo)}>
+          <button type="submit" onClick={this.handleSubmit}>
             Add Todo
           </button>
           <button type="submit">Clear Completed</button>
