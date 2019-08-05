@@ -2,6 +2,7 @@ import React from 'react';
 
 interface TodoFormProps {
   addTodo: (name: string) => void;
+  clearCompleted: () => void;
 }
 
 interface TodoFormState {
@@ -34,6 +35,12 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
     addTodo(todo);
   };
 
+  private handleClear = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    event.preventDefault();
+    const { clearCompleted } = this.props;
+    clearCompleted();
+  };
+
   public render(): React.ReactElement {
     const { todo } = this.state;
     return (
@@ -48,7 +55,9 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
           <button type="submit" onClick={this.handleSubmit}>
             Add Todo
           </button>
-          <button type="submit">Clear Completed</button>
+          <button type="submit" onClick={this.handleClear}>
+            Clear Completed
+          </button>
         </form>
       </div>
     );

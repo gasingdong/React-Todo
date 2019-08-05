@@ -1,6 +1,6 @@
 .todo {
     border: 1px solid black;
-    width: 100px;
+    width: auto;
     text-align: center;
     margin: 10px;
 }

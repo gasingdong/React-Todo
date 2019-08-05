@@ -51,13 +51,23 @@ class App extends React.Component<{}, AppState> {
     );
   };
 
+  private clearCompleted = (): void => {
+    this.setState(
+      (prevState: AppState): AppState => ({
+        todoList: prevState.todoList.filter((todo): boolean => {
+          return !todo.completed;
+        }),
+      })
+    );
+  };
+
   public render(): React.ReactNode {
     const { todoList } = this.state;
     return (
       <div>
         <h2>Todo List: MVP</h2>
         <TodoList todoList={todoList} toggleTodo={this.toggleTodo} />
-        <TodoForm addTodo={this.addTodo} />
+        <TodoForm addTodo={this.addTodo} clearCompleted={this.clearCompleted} />
       </div>
     );
   }
