@@ -18,46 +18,71 @@ class App extends React.Component<{}, AppState> {
     };
   }
 
+  public componentDidMount(): void {
+    this.setState(this.getLocalStorage());
+  }
+
+  private getLocalStorage = (): AppState => {
+    const item = window.localStorage.getItem('todoList');
+    return item ? JSON.parse(item) : { todoList: [] };
+  };
+
+  private setLocalStorage = (state: AppState): void => {
+    window.localStorage.setItem('todoList', JSON.stringify(state));
+  };
+
   private addTodo = (name: string): void => {
     this.setState(
-      (prevState: AppState): AppState => ({
-        todoList: [
-          ...prevState.todoList,
-          {
-            task: name,
-            id: Date.now(),
-            completed: false,
-          },
-        ],
-      })
+      (prevState: AppState): AppState => {
+        const newState = {
+          todoList: [
+            ...prevState.todoList,
+            {
+              task: name,
+              id: Date.now(),
+              completed: false,
+            },
+          ],
+        };
+        this.setLocalStorage(newState);
+        return newState;
+      }
     );
   };
 
   private toggleTodo = (id: number): void => {
     this.setState(
-      (prevState: AppState): AppState => ({
-        todoList: prevState.todoList.map(
-          (todo): TodoData => {
-            if (todo.id === id) {
-              return {
-                ...todo,
-                completed: !todo.completed,
-              };
+      (prevState: AppState): AppState => {
+        const newState = {
+          todoList: prevState.todoList.map(
+            (todo): TodoData => {
+              if (todo.id === id) {
+                return {
+                  ...todo,
+                  completed: !todo.completed,
+                };
+              }
+              return todo;
             }
-            return todo;
-          }
-        ),
-      })
+          ),
+        };
+        this.setLocalStorage(newState);
+        return newState;
+      }
     );
   };
 
   private clearCompleted = (): void => {
     this.setState(
-      (prevState: AppState): AppState => ({
-        todoList: prevState.todoList.filter((todo): boolean => {
-          return !todo.completed;
-        }),
-      })
+      (prevState: AppState): AppState => {
+        const newState = {
+          todoList: prevState.todoList.filter((todo): boolean => {
+            return !todo.completed;
+          }),
+        };
+        this.setLocalStorage(newState);
+        return newState;
+      }
     );
   };
 
