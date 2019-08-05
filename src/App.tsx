@@ -2,9 +2,10 @@ import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm';
 import TodoList from './components/TodoComponents/TodoList';
 import Todo from './components/TodoComponents/Todo';
+import TodoData from './components/TodoData';
 
 interface AppState {
-  todoList: string[];
+  todoList: TodoData[];
 }
 
 class App extends React.Component<{}, AppState> {
@@ -20,7 +21,14 @@ class App extends React.Component<{}, AppState> {
 
   private addTodo = (name: string): void => {
     this.setState((prevState: { todoList: [] }): {} => ({
-      todoList: [...prevState.todoList, name],
+      todoList: [
+        ...prevState.todoList,
+        {
+          task: name,
+          id: Date.now(),
+          completed: false,
+        },
+      ],
     }));
   };
 
@@ -30,8 +38,8 @@ class App extends React.Component<{}, AppState> {
       <div>
         <h2>Todo List: MVP</h2>
         {todoList.map(
-          (task): React.ReactElement => (
-            <Todo task={task} />
+          (todo): React.ReactElement => (
+            <Todo todo={todo} />
           )
         )}
         <TodoForm addTodo={this.addTodo} />

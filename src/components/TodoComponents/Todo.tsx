@@ -1,12 +1,13 @@
 import React from 'react';
+import TodoData from '../TodoData';
 
 interface TodoProps {
-  task: string;
+  todo: TodoData;
 }
 
 const Todo = (props: TodoProps): React.ReactElement => {
-  const { task } = props;
-  return <p>{task}</p>;
+  const { todo } = props;
+  return <p>{todo.task}</p>;
 };
 
 export default Todo;
