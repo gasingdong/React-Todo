@@ -1,7 +1,6 @@
 import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm';
 import TodoList from './components/TodoComponents/TodoList';
-import Todo from './components/TodoComponents/Todo';
 import TodoData from './components/TodoData';
 
 interface AppState {
